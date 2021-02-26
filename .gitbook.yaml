@@ -1,0 +1,8 @@
+root: ./
+
+structure:
+  Welcome: README.md
+  Using Docker: 01_ssh_docker_configuration/README.md
+
+#redirects:
+#  previous/page: new-folder/page.md
