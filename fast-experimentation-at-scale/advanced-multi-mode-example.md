@@ -1,2 +1,0 @@
-# Advanced Multi-mode Example
-

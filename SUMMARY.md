@@ -1,6 +1,6 @@
 # Table of contents
 
-* [Introduction](README.md)
+* [Practical RL Research At Scale](README.md)
 
 ## Fast Experimentation At Scale
 
