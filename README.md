@@ -1,4 +1,4 @@
-# Jaynes Examples: Cross-Provider Computation at Scale
+# Practical RL at Scale
 
 This repository is an up-to-date collection of minimal jaynes usage examples. You can mix and match configurations between these included usecases for your particular infrastructure.
 
@@ -18,7 +18,7 @@ pip install params-proto waterbear
 
 ## Table of Contents
 
-For detailed documentation on each usecases, refer to the in-dept tutorial bellow: 
+For detailed documentation on each usecases, refer to the in-dept tutorial bellow: 
 
 1. [**Multiple SSH Reacheable Machines**](03_multiple_ssh_reacheable_machines)
 4. [**Compute at Scale with SLRUM & Jaynes**](04_slurm_configuration)
@@ -44,7 +44,7 @@ people can search for things more easily!
 
 ## How to Debug
 
-`Jaynes` offer a way to transparently debug the launch via `verbose` mode, where it prints out all of the local and remote script that it generates. To debug a launch script, set `verbose` to `true` either in the yaml file, or through the `jaynes.config` call. To debug in the remote host where you intend to run your job, you can often copy and paste the generated script
+`Jaynes` offer a way to transparently debug the launch via `verbose` mode, where it prints out all of the local and remote script that it generates. To debug a launch script, set `verbose` to `true` either in the yaml file, or through the `jaynes.config` call. To debug in the remote host where you intend to run your job, you can often copy and paste the generated script
 to see the error messages.
 
 **Debugging Steps:**
