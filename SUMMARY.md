@@ -1,8 +1,6 @@
-## Best Practices and Design Patterns
+# Table of contents
 
-
-
-## Collaborating with Git
+* [Introduction](README.md)
 
 ## Fast Experimentation At Scale
 
