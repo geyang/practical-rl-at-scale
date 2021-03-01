@@ -23,8 +23,7 @@ def save_progress(network=None, optimizer=None, losses=None):
     if network is not None:
         torch.save(network.state_dict(), os.path.join(DIR_ROOT, 'model.pth'))
     if optimizer is not None:
-        torch.save(optimizer.state_dict(),
-                   os.path.join(DIR_ROOT, 'optimizer.pth'))
+        torch.save(optimizer.state_dict(), os.path.join(DIR_ROOT, 'optimizer.pth'))
     if losses is not None:
         with open(os.path.join(DIR_ROOT, 'losses.json'), 'w') as f:
             json.dump(losses, f)
@@ -34,10 +33,8 @@ def save_progress(network=None, optimizer=None, losses=None):
 def load_progress(network, optimizer, losses):
     os.makedirs(DIR_ROOT, exist_ok=True)
     try:
-        network.load_state_dict(torch.load(os.path.join(DIR_ROOT,
-                                                        'model.pth')))
-        optimizer.load_state_dict(
-            torch.load(os.path.join(DIR_ROOT, 'optimizer.pth')))
+        network.load_state_dict(torch.load(os.path.join(DIR_ROOT, 'model.pth')))
+        optimizer.load_state_dict(torch.load(os.path.join(DIR_ROOT, 'optimizer.pth')))
         with open(os.path.join(DIR_ROOT, 'losses.json'), 'r') as f:
             data = json.load(f)
             for key in data:
@@ -49,6 +46,7 @@ def load_progress(network, optimizer, losses):
 
 
 class Net(nn.Module):
+
     def __init__(self):
         super(Net, self).__init__()
         self.conv1 = nn.Conv2d(1, 10, kernel_size=5)
@@ -70,8 +68,8 @@ class Net(nn.Module):
 def train(network, optimizer, train_loader, batch_size_train, losses, epoch,
           save_interval):
     if losses['train']['counter']:
-        last_batch = (losses['train']['counter'][-1] - (
-            (epoch - 1) * len(train_loader.dataset))) // batch_size_train + 1
+        last_batch = (losses['train']['counter'][-1] -
+                      ((epoch - 1) * len(train_loader.dataset))) // batch_size_train + 1
     else:
         last_batch = -1
 
@@ -89,15 +87,13 @@ def train(network, optimizer, train_loader, batch_size_train, losses, epoch,
                 epoch, batch_idx * batch_size_train, len(train_loader.dataset),
                 100. * batch_idx / len(train_loader), loss.item()))
             losses['train']['counter'].append((batch_idx * batch_size_train) +
-                                              ((epoch - 1) *
-                                               len(train_loader.dataset)))
+                                              ((epoch - 1) * len(train_loader.dataset)))
             losses['train']['losses'].append(loss.item())
             save_progress(network=network, optimizer=optimizer, losses=losses)
 
 
 def test(network, test_loader, losses, train_examples_seen):
-    if losses['test']['counter'] and train_examples_seen <= losses['test'][
-            'counter'][-1]:
+    if losses['test']['counter'] and train_examples_seen <= losses['test']['counter'][-1]:
         return  # Only test if not already in saved progress
 
     network.eval()
@@ -120,12 +116,8 @@ def test(network, test_loader, losses, train_examples_seen):
 
 def drawgraph(losses, epoch):
     fig = plt.figure()
-    plt.plot(losses['train']['counter'],
-             losses['train']['losses'],
-             color='blue')
-    plt.scatter(losses['test']['counter'],
-                losses['test']['losses'],
-                color='red')
+    plt.plot(losses['train']['counter'], losses['train']['losses'], color='blue')
+    plt.scatter(losses['test']['counter'], losses['test']['losses'], color='red')
     plt.legend(['Train Loss', 'Test Loss'], loc='upper right')
     plt.xlabel('number of training examples seen')
     plt.ylabel('negative log likelihood loss')
@@ -144,9 +136,7 @@ def run(n_epochs=3,
 
     # Initialize, and load any progress from previous runs
     network = Net()
-    optimizer = optim.SGD(network.parameters(),
-                          lr=learning_rate,
-                          momentum=momentum)
+    optimizer = optim.SGD(network.parameters(), lr=learning_rate, momentum=momentum)
     losses = {
         'train': {
             'counter': [],
@@ -166,7 +156,7 @@ def run(n_epochs=3,
         download=True,
         transform=torchvision.transforms.Compose([
             torchvision.transforms.ToTensor(),
-            torchvision.transforms.Normalize((0.1307, ), (0.3081, ))
+            torchvision.transforms.Normalize((0.1307,), (0.3081,))
         ])),
                                                batch_size=batch_size_train,
                                                shuffle=True)
@@ -176,7 +166,7 @@ def run(n_epochs=3,
         download=True,
         transform=torchvision.transforms.Compose([
             torchvision.transforms.ToTensor(),
-            torchvision.transforms.Normalize((0.1307, ), (0.3081, ))
+            torchvision.transforms.Normalize((0.1307,), (0.3081,))
         ])),
                                               batch_size=batch_size_test,
                                               shuffle=True)
@@ -184,8 +174,8 @@ def run(n_epochs=3,
     # Train model
     test(network, test_loader, losses, 0)
     for epoch in range(1, n_epochs + 1):
-        train(network, optimizer, train_loader, batch_size_train, losses,
-              epoch, save_interval)
+        train(network, optimizer, train_loader, batch_size_train, losses, epoch,
+              save_interval)
         test(network, test_loader, losses, epoch * len(train_loader.dataset))
         drawgraph(losses, epoch)
 
