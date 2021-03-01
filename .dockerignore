@@ -1,0 +1,8 @@
+.DS_Store
+build
+__pycache__
+
+.idea
+data
+venv
+output
