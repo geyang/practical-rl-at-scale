@@ -114,4 +114,7 @@ def run(args=None):
 
 
 if __name__ == '__main__':
+    from ml_logger import logger
+
+    logger.configure(prefix="../output")
     run()
