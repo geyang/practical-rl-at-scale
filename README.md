@@ -13,15 +13,18 @@ Pipenv is a little bit heavier of a dependency manager that can be pip installed
 
 ### Conda
 Conda is a heavyweight dependency manager, made for python and R packages that comes with two major forms Anaconda and Microconda.
-
-
+Anaconda is conda packaged with a huge library of dependencies pre-installed.  It is most useful for R packages and pip packages
+Miniconda comes with the minimal library of dependencies
+When using conda, by default you are moved into a conda environment with shell.  To switch and create new environments `conda create -n envname python=3.8`
+To export an environment run `conda env export > environment.yml`.  Conda will immediately activate when logging into a shell.
 
 ## Docker
-Docker is a container 
+Docker is a virtual machine alternative, using containers as a paradigm.  To view more docker information, go through the Docker Readme
 [**Docker**](docker/README.md)
 
 
 ## Jaynes
+Jaynes is a lightweight runner that can connect to local machines, cloud machins, and clusters managed by SLURM and Kubernetes.  It helps manage running a workload on multiple different sources of compute.  Check out the different Jaynes examples here: [**Jaynes**](jaynes/README.md)
 
 
 
