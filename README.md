@@ -1,4 +1,10 @@
-# Scaling Experiments
+# Experimentation At Scale
+
+## Providers-Agnostic Launch
+
+Jaynes is a lightweight runner that can connect to local machines, cloud machins, and clusters managed by SLURM and Kubernetes.  It helps manage running a workload on multiple different sources of compute.  Check out the different Jaynes examples here: 
+
+- [**Jaynes Starter Kit**](https://github.com/geyang/jaynes-starter-kit)
 
 ## Environment Management
 In the root of the repo we include a bunch of options for lightweight environment management.  There are many lightweight options available, but they generally all are quire similar in how they work.  The main differences between them is how you install them and how they manage multiple environments on your machine.  
@@ -22,9 +28,6 @@ To export an environment run `conda env export > environment.yml`.  Conda will i
 Docker is a virtual machine alternative, using containers as a paradigm.  To view more docker information, go through the Docker Readme
 [**Docker**](docker/README.md)
 
-
-## Jaynes
-Jaynes is a lightweight runner that can connect to local machines, cloud machins, and clusters managed by SLURM and Kubernetes.  It helps manage running a workload on multiple different sources of compute.  Check out the different Jaynes examples here: [**Jaynes**](jaynes/README.md)
 
 
 
