@@ -5,6 +5,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 import torchvision
+
+# Or better: make a custom docker image with dependencies already installed
 from tqdm import tqdm
 
 torch.backends.cudnn.enabled = False
@@ -22,11 +24,11 @@ print("Starting mnist.py")
 #     run(**parser.parse_args().__dict__)
 #     print("DONE!")
 
-from params_proto.neo_proto import ParamsProto, Proto
+from params_proto.neo_proto import ParamsProto
 
 
 class Args(ParamsProto):
-    lr = Proto(0.01, help="learning rate, good starting point is 1e-2")
+    lr = 0.01
     seed = 100
     n_epochs = 20
     batch_size = 32
@@ -111,12 +113,12 @@ def run(args=None):
         ])), batch_size=Args.batch_size, shuffle=True)
 
     # Train model
-    evaluation(network, test_loader)
     for epoch in range(1, Args.n_epochs + 1):
         logger.log(epoch=epoch)
         train(network, optimizer, train_loader)
         evaluation(network, test_loader)
         logger.flush()
+        # drawgraph(losses, epoch)
 
 
 if __name__ == '__main__':
@@ -124,4 +126,3 @@ if __name__ == '__main__':
 
     logger.configure(prefix=f"../output/{logger.now('%m-%d/%H.%M.%S')}")
     run()
-

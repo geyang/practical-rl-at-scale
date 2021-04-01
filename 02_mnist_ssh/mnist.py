@@ -7,6 +7,7 @@ import torch.optim as optim
 import torchvision
 
 # Or better: make a custom docker image with dependencies already installed
+from tqdm import tqdm
 
 torch.backends.cudnn.enabled = False
 test_env = os.environ.get("TEST_ENV")
@@ -60,13 +61,13 @@ class LeNet(nn.Module):
 def train(network, optimizer, train_loader):
     from ml_logger import logger
     network.train()
-    for batch_idx, (data, target) in enumerate(train_loader):
+    for batch_idx, (data, target) in enumerate(tqdm(train_loader, desc='Training')):
         optimizer.zero_grad()
         output = network(data)
         loss = F.nll_loss(output, target)
         loss.backward()
         optimizer.step()
-        logger.log(loss=loss)
+        logger.log(loss=loss.cpu().item())
 
 
 def evaluation(network, test_loader):
@@ -82,10 +83,15 @@ def evaluation(network, test_loader):
             pred = output.data.max(1, keepdim=True)[1]
             correct += pred.eq(target.data.view_as(pred)).sum()
     test_loss /= len(test_loader.dataset)
-    logger.log(loss=test_loss)
+    logger.log(test_loss=test_loss)
 
 
 def run(args=None):
+    from ml_logger import logger
+
+    Args._update(args)
+    logger.log_params(Args=vars(Args))
+
     torch.manual_seed(Args.seed)
 
     # Initialize, and load any progress from previous runs
@@ -93,28 +99,30 @@ def run(args=None):
     optimizer = optim.SGD(network.parameters(), lr=Args.lr, momentum=Args.momentum)
     # Prepare data
     train_loader = torch.utils.data.DataLoader(torchvision.datasets.MNIST(
-        "data", train=True, download=True,
+        "../data", train=True, download=True,
         transform=torchvision.transforms.Compose([
             torchvision.transforms.ToTensor(),
-            torchvision.transforms.Normalize((0.1307,), (0.3081,))
+            torchvision.transforms.Normalize(
+                (0.1307,), (0.3081,))
         ])), batch_size=Args.batch_size, shuffle=True)
     test_loader = torch.utils.data.DataLoader(torchvision.datasets.MNIST(
-        "data", train=False,
-        download=True, transform=torchvision.transforms.Compose([
+        "../data", train=False, download=True,
+        transform=torchvision.transforms.Compose([
             torchvision.transforms.ToTensor(),
             torchvision.transforms.Normalize((0.1307,), (0.3081,))
         ])), batch_size=Args.batch_size, shuffle=True)
 
     # Train model
-    evaluation(network, test_loader)
     for epoch in range(1, Args.n_epochs + 1):
+        logger.log(epoch=epoch)
         train(network, optimizer, train_loader)
         evaluation(network, test_loader)
+        logger.flush()
         # drawgraph(losses, epoch)
 
 
 if __name__ == '__main__':
     from ml_logger import logger
 
-    logger.configure(prefix="../output")
+    logger.configure(prefix=f"../output/{logger.now('%m-%d/%H.%M.%S')}")
     run()
