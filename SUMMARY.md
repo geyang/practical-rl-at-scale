@@ -1,12 +1,8 @@
-## Best Practices and Design Patterns
+# Table of contents
 
-
-
-## Collaborating with Git
+* [Practical RL Research At Scale](README.md)
 
 ## Fast Experimentation At Scale
-
- 
 
 1. [**Multiple SSH Reacheable Machines**](03_multiple_ssh_reacheable_machines/README.md)
 2. [**Compute at Scale with SLRUM & Jaynes**](04_slurm_configuration/README.md)
